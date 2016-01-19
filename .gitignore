@@ -1,0 +1,3 @@
+*.pdf
+src/*.tex
+src/*.aux
