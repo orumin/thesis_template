@@ -1,0 +1,7 @@
+figureTitle: "Figure "
+tableTitle: "Table "
+#listingTitle: "コード "
+figPrefix: "Figure "
+#eqnPrefix: "式"
+tblPrefix: "Table "
+#lstPrefix: "コード"

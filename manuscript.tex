@@ -1,33 +1,26 @@
-\documentclass[technicalreport]{sty/ieicej}
+\documentclass[final,3p,times,twocolumn,dvipdfmx]{elsarticle}
 %
-
-\usepackage[T1]{fontenc}
-\usepackage{amsmath,amssymb}
+\usepackage[T2A,T1]{fontenc}
 \usepackage{lmodern}
+%elsarticleはnatbibを使うのでciteパッケージはナシ
+%\usepackage{cite}
+\usepackage{algpseudocode,algorithm}
+\usepackage{fancybox}
 \usepackage{bm}
-\usepackage{url}
-\usepackage{here}
-\usepackage{cite}
+\usepackage{float}
 \usepackage{longtable,booktabs}
+\usepackage{tabularx}
 \usepackage{graphicx}
 \usepackage{ascmac}
-\usepackage{ifxetex,ifluatex}
-\usepackage{fixltx2e} % provides \textsubscript
 
-% use upquote if available, for straight quotes in verbatim environments
+\usepackage[bold]{otf}
+\usepackage{tgcursor,tgheros,tgtermes} % TeX Gyre Cursor, Heros, Termes (compatible Courier, Helvetica, Times)
+%\usepackage{mathptmx}
+%\usepackage[scaled]{helvet}
+%\renewcommand{\ttdefault}{pcr}
+
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
-\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
-  \usepackage[utf8]{inputenc}
-\else % if luatex or xelatex
-  \ifxetex
-    \usepackage{mathspec}
-    \usepackage{xltxtra,xunicode}
-  \else
-    \usepackage{fontspec}
-  \fi
-  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
-  \newcommand{\euro}{€}
-\fi
+\usepackage[utf8x]{inputenc}
 
 % use microtype if available
 \IfFileExists{microtype.sty}{\usepackage{microtype}}{}
@@ -52,55 +45,60 @@
 \newcommand{\RegionMarkerTok}[1]{{#1}}
 \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
 \newcommand{\NormalTok}[1]{{#1}}
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\usepackage{url}
 % hyperlink
-%\ifxetex
-%  \usepackage[setpagesize=false, % page size defined by xetex
-%              unicode=false, % unicode breaks when used with xetex
-%              xetex]{hyperref}
-%\else
-%  \usepackage[unicode=true]{hyperref}
-%\fi
-%\hypersetup{breaklinks=true,
-%            bookmarks=true,
-%            pdfauthor={},
-%            pdftitle={},
+\usepackage{hyperref}
+\usepackage{pxjahyper}
+% pdfファイルのプロパティに出てくる情報を設定したければここを弄る
+\hypersetup{breaklinks=true,
+            bookmarks=true,
+            bookmarksnumbered=true,
+            pdfauthor={orumin},
+            pdftitle={Markdown で論文を書くための Makefile やプリアンブルのセット},
+            pdfsubject={},
+            pdfkeywords={Markdown; LaTeX; Pandoc},
 %            colorlinks=true,
 %            citecolor=blue,
 %            urlcolor=blue,
 %            linkcolor=black,
-%            pdfborder={0 0 0}}
-%\urlstyle{same}
-%
-\def\IEICEJcls{\texttt{style/ieicej.cls}}
-\def\IEICEver{1.3}
-\newcommand{\AmSLaTeX}{%
- $\mathcal A$\lower.4ex\hbox{$\!\mathcal M\!$}$\mathcal S$-\LaTeX}
-\newcommand{\PS}{{\scshape Post\-Script}}
-\def\BibTeX{{\rmfamily B\kern-.05em{\scshape i\kern-.025em b}\kern-.08em
- T\kern-.1667em\lower.7ex\hbox{E}\kern-.125em X}}
+%            pdfborder={0 0 0}
+            }
+\urlstyle{same}
 
-\input{title_name}
+% natbibでバンクーバー方式を使う
+\biboptions{sort&compress}
+% これを使わない場合のnatbibでの引用は\citeではなく\citep
 
-\begin{jabstract}
- \input{src/jabstract}
-\end{jabstract}
-
-\begin{jkeyword}
- STUB
-\end{jkeyword}
-
-\begin{eabstract}
- \input{src/eabstract}
-\end{eabstract}
-
-\begin{ekeyword}
- スタブ
-\end{ekeyword}
+\journal{Example Journal}
 
 \begin{document}
 
-\maketitle
+\begin{frontmatter}
+
+\input{title}
+\begin{abstract}
+\input{src/abstract}
+\end{abstract}
+\begin{keyword}
+Markdown \sep LaTeX \sep Pandoc
+\end{keyword}
+
+\end{frontmatter}
 
 \input{src/contents}
+
+% Appendixは次を使う
+%\appendix
+
+\newpage
+
+\section{参考文献}
+
+\bibliographystyle{elsarticle-num}
+\bibliography{cite/paper}
 
 \end{document}
