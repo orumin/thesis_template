@@ -3,8 +3,6 @@ PANDOC=pandoc
 BIBTEX=pbibtex
 DVI2PDF=dvipdfmx
 TEX_FLAGS= --shell-escape -kanji=utf8 -kanji-internal=utf8 -interaction=batchmode
-# PANDOC_FLAGS について，Makefile 内で pbibtex を呼んでいるけど pandoc filter で参考文献の処理をしたかったらコメントを外す
-PANDOC_FLAGS= --smart -f markdown+pipe_tables -t latex --filter pandoc-crossref #--filter pandoc-citeproc
 
 TARGET=paper
 
@@ -17,11 +15,11 @@ MDSCRIPTS = src/abstract.md src/contents.md
 TEXFILES=$(MDSCRIPTS:.md=.tex)
 DVIFILE=$(SOURCE:.tex=.dvi)
 BIBFILES=cite/paper.bib
-BIBSTYLES=sty/elsevier-vancouver.csl
 REFSTYLES=sty/crossref_config.yaml
 
-# Makefile 内で pbibtex を呼んでいるけど pandoc filter で参考文献の処理をしたかったら こっちも コメントを外す
-PANDOC_FILTER_FLAGS= -M "crossrefYaml=$(REFSTYLES)" #--bibliography=$(BIBFILES) --csl=$(BIBSTYLES)
+PANDOC_FLAGS= --smart -f markdown+pipe_tables -t latex --filter pandoc-crossref --natbib
+
+PANDOC_FILTER_FLAGS= -M "crossrefYaml=$(REFSTYLES)"
 
 .SUFFIXES: .tex .md .pdf
 .PHONY: all semi-clean clean preview
@@ -33,9 +31,6 @@ all: $(TARGET).pdf semi-clean
 	| $(PANDOC) --verbose $(PANDOC_FLAGS) $(PANDOC_FILTER_FLAGS) \
 	| sed 's/.png/.pdf/g' \
 	| sed 's/includegraphics/includegraphics[width=1.0\\columnwidth]/g' \
-	| sed 's/\\cite/~\\cite/g' \
-	| sed 's/\\textbackslash{}\,/\\\,/g' \
-	| sed 's/\\textasciitilde{}\\ref{/~\\ref{/g' \
 	| sed 's/\[htbp\]/[t]/g' \
 	> $@
 

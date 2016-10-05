@@ -73,6 +73,27 @@
 \biboptions{sort&compress}
 % これを使わない場合のnatbibでの引用は\citeではなく\citep
 
+% Pandoc は longtable を使うので twocolumn なドキュメントクラスでは次を使う
+\makeatletter
+\let\oldlt\longtable
+\let\endoldlt\endlongtable
+\def\longtable{\@ifnextchar[\longtable@i \longtable@ii}
+\def\longtable@i[#1]{\begin{figure}[t]
+\onecolumn
+\begin{minipage}{0.5\textwidth}
+\oldlt[#1]
+}
+\def\longtable@ii{\begin{figure}[t]
+\onecolumn
+\begin{minipage}{0.5\textwidth}
+\oldlt
+}
+\def\endlongtable{\endoldlt
+\end{minipage}
+\twocolumn
+\end{figure}}
+\makeatother
+
 \journal{Example Journal}
 
 \begin{document}
@@ -94,7 +115,6 @@ Markdown \sep LaTeX \sep Pandoc
 % Appendixは次を使う
 %\appendix
 
-\newpage
 
 \section{参考文献}
 
