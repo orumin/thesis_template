@@ -4,7 +4,7 @@ BIBTEX=pbibtex
 DVI2PDF=dvipdfmx
 TEX_FLAGS= --shell-escape -kanji=utf8 -kanji-internal=utf8 -interaction=batchmode
 # PANDOC_FLAGS について，Makefile 内で pbibtex を呼んでいるけど pandoc filter で参考文献の処理をしたかったらコメントを外す
-PANDOC_FLAGS= --smart -t latex --filter pandoc-crossref #--filter pandoc-citeproc
+PANDOC_FLAGS= --smart -f markdown+pipe_tables -t latex --filter pandoc-crossref #--filter pandoc-citeproc
 
 TARGET=paper
 
@@ -40,17 +40,17 @@ all: $(TARGET).pdf semi-clean
 	> $@
 
 $(TARGET).pdf: $(TEXFILES)
-	@for i in `seq 1 $(COUNT)`; \
+	@cd tex && for i in `seq 1 $(COUNT)`; \
 	do \
 		$(TEX) $(TEX_FLAGS) $(SOURCE); \
 		if [ ! -e "$(SOURCE:.tex=.blg)" ]; then \
 			$(BIBTEX) $(basename $(SOURCE)); \
 		fi \
 	done
-	$(DVI2PDF) -o $(TARGET).pdf $(DVIFILE) 2> /dev/null
+	cd tex && $(DVI2PDF) -o ../$(TARGET).pdf $(DVIFILE) 2> /dev/null
 
 semi-clean:
-	@rm -f *.aux *.log *.out *.lof *.toc *.bbl *.blg *.xml *.bcf *blx.bib *.spl
+	@cd tex && rm -f *.aux *.log *.out *.lof *.toc *.bbl *.blg *.xml *.bcf *blx.bib *.spl
 
 clean: semi-clean
 	@rm -f $(TARGET).pdf $(DVIFILE) $(TEXFILES)
